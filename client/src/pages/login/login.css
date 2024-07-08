@@ -1,0 +1,61 @@
+#loginInfo {
+    margin-top: 200px; /* Adjust margin-top as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  #emailEnter, #numEnter, #email, #num {
+    font-size: 15px;
+    margin-bottom: 10px; /* Adjust vertical spacing between elements */
+  }
+  
+  #email, #num {
+    font-size: 19px;
+    color: black; /* Initial text color */
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  #email:focus, #num:focus {
+    color: white; /* Text color on focus */
+    background-color: #001f3f; /* Dark blue background color on focus */
+  }
+  
+  #choice {
+    text-align: center;
+    margin-bottom: 10px; /* Adjust vertical spacing */
+  }
+  
+  
+  #goButton:hover {
+    background-color: #002855; /* Darker shade on hover */
+  }
+  
+  #goButton{
+    position: absolute;
+    bottom: 275px;
+    right: 30%; 
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer; 
+    transition: background-color 0.3s, color white;
+    font-size: 30px;
+    color: black;
+  }
+  #cancel:hover {
+    background-color: #555; /* Darker shade on hover */
+  }
+  #cancel{
+    position: absolute;
+    bottom: 275px;
+    left: 30%; /* Position 10% from the left edge of the "send" element */
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 30px;
+    color:#2c2c2c;
+  }
+  

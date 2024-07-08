@@ -1,0 +1,45 @@
+/* Reset default margin and padding for the whole page */
+body {
+    margin: 200px;
+}
+
+/* Set background color and text color */
+body {
+    background-color:lightgray; /* blackish-blue background */
+    color: #001f3f; /* white text color */
+    font-family: 'Times New Roman', Times, serif; /* Times New Roman font */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+  
+  
+  /* Style for logo */
+#logo {
+    position: absolute;
+    top: 10px; /* Adjust top position as needed */
+    left: 10px; /* Adjust left position as needed */
+    z-index: 2; /* Ensure logo is above navigation */
+  }
+  
+  /* Style for carlparty */
+#carlparty {
+    position: absolute;
+    top: 10px; /* Adjust top position as needed */
+    left: calc(10px + 100px); /* Example: logo width (100px) + 10px padding */
+    z-index: 2; /* Ensure carlparty is above navigation */
+  }
+  
+  /* Style for leave */
+#leave {
+    position: absolute;
+    top: 10px; /* Adjust top position as needed */
+    right: 10px; /* Adjust right position as needed */
+    z-index: 2; /* Ensure leave is above navigation */
+  }
+  
+  /* Center align children elements */
+#navigation > * {
+    margin: 10px; /* Adjust margin as needed */
+  }
