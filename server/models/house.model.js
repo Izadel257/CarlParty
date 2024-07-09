@@ -10,10 +10,19 @@ const houseSchema= new mongoose.Schema({
       }
     ],
     "reports": Number,                   
-    "createdAt": Date,            
-    "updatedAt": Date             
+    "createdAt": {
+      type: Date, 
+      default: mongoose.now
+    }                    
   }
   );
-
+  houseSchema.set('toJSON', {
+    transform: function(doc, ret, options) {
+        ret.id = ret._id; // Transform _id to id
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+    }
+});
 const House = mongoose.model("House", houseSchema);
 module.exports = House;

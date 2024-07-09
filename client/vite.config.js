@@ -5,11 +5,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  // plugins: [],
 
   plugins: [
     replace({
       'process.env.REACT_APP_GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.REACT_APP_GOOGLE_MAPS_API_KEY),
     }),
+    react()
   ],
 })

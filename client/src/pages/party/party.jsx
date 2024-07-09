@@ -74,9 +74,9 @@ function Party(){
     //  display all the information to the end user
     return (
         <div>
-            {throwing.map(houseName =>(
-            <button key = {houseName.index} onClick={async () => await handleLocationClick(getAddressByName(houseName)+", Northfield, MN 55057")}>
-            {houseName}
+            {throwing.map(house =>(
+            <button key = {house.index} onClick={async () => await handleLocationClick(getAddressByName(house.houseName)+", Northfield, MN 55057")}>
+            {house.houseName}
             </button>
             
             ))}

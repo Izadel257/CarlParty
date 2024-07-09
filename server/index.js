@@ -6,11 +6,12 @@ const app = express();
 const bodyParser = require ('body-parser');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const authRoutes = require ("./routes/authRoutes")
-const mapsRoute = require ("./routes/mapsRoute")
+const authRoutes = require ("./routes/authRoutes");
+const mapsRoute = require ("./routes/mapsRoute");
+const houseRoute = require ("./routes/houseRoute");
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:1573'); // Replace with your frontend URL during development
+  res.header('Access-Control-Allow-Origin', 'http://localhost:1573'); 
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
@@ -37,7 +38,9 @@ db.once('open', () => {
   app.listen(3001, () => console.log("Listening on port 3001"));
 });
 
-app.use("/api/user", authRoutes)
-app.use("/api/maps", mapsRoute)
+app.use("/api/user", authRoutes);
+app.use("/api/maps", mapsRoute);
+app.use("/api/party", houseRoute);
+
 
 

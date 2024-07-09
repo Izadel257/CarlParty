@@ -5,6 +5,7 @@ import { HouseContext } from "../../context/houseContext";
 import { useContext } from "react";
 
 function ShowHouses(){
+    const {partyDate, setPartyDate} = useState('')
     const { handleThrowingClick } = useContext(HouseContext)
     const handleHouseClick = async(houseName) =>{
         return (
@@ -16,11 +17,17 @@ function ShowHouses(){
     function HouseForm ({houseName}){
         return (
             <div>
-                <form>
-                    <p>Date</p>
-                    <input type="text"></input>
+                <form >
+                    <label id = "date_party">Date</label>
+                    <input 
+                        id= "partyDate" 
+                        type="date" 
+                        value={partyDate}
+                        onChange={(e) => setPartyDate(e.target.value)}
+                        required></input>
+                    <button type="submit" onClick={ async() => await handleThrowingClick (houseName, partyDate)}>go</button>
                 </form>
-                <button onClick={ async() => await handleThrowingClick (houseName)}>go</button>
+                
             </div>
         )
     }
@@ -31,7 +38,7 @@ function ShowHouses(){
         <ul>
             {AllHouses.map((house, index) => (
             <button onClick={ async () => await handleHouseClick(house.name)}>
-                <li key={index} color="red">{house.name}</li>
+                <li key={index}>{house.name}</li>
             </button>
             ))}
             {clickedHouse && <HouseForm houseName= {clickedHouse} />}
