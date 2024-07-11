@@ -5,7 +5,7 @@ import { HouseContext } from "../../context/houseContext";
 import { useContext } from "react";
 
 function ShowHouses(){
-    const {partyDate, setPartyDate} = useState('')
+    const [partyDate, setPartyDate] = useState('')
     const { handleThrowingClick } = useContext(HouseContext)
     const handleHouseClick = async(houseName) =>{
         return (

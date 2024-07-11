@@ -21,6 +21,7 @@ const createHouse = async(houseName, createdAt) => {
 
 
 export const HouseProvider = ({children}) =>{
+  const [update, setUpdate] = useState(false)
   const [throwing, setThrowing] = useState([]); 
 
   const updateThrowing = async () =>{
@@ -31,25 +32,27 @@ export const HouseProvider = ({children}) =>{
       }
       const data = res.data; 
       setThrowing(data)
+      console.log("data expected", data)
     } catch(error){
       console.error("Error getting all the houses that have parties",error)
     }
   }
 
+  
   useEffect (()=>{
     updateThrowing(); 
-    const interval = setInterval(() => {
-      updateThrowing()
-    }, 500000000000000);
-    return() => clearInterval(interval)
-  }, [])
+  }, [update])
 
-    const handleThrowingClick =  (houseName, createdAt) =>{
-        createHouse(houseName, createdAt)
-    }
-    return (
-        <HouseContext.Provider value={{ throwing,handleThrowingClick }}>
-          {children}
-        </HouseContext.Provider>
-      );
+  const handleThrowingClick =  (houseName, createdAt) =>{
+    setUpdate(!update)
+    createHouse(houseName, createdAt)
+  }
+  function updateInfo() {
+    setUpdate(!update)
+  }
+  return (
+      <HouseContext.Provider value={{ throwing,handleThrowingClick, updateInfo, }}>
+        {children}
+      </HouseContext.Provider>
+    );
 }

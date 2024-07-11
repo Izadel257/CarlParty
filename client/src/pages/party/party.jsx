@@ -13,7 +13,8 @@ import { useContext } from "react";
 import Comments from "../comment/comment";
 
 function Party(){ 
-    const {throwing } = useContext(HouseContext); 
+    const { throwing } = useContext(HouseContext); 
+    const { updateInfo } = useContext(HouseContext)
     const [showComments, setShowComments] = useState(false)
     const getAddressByName = (name) => {
         const foundItem = AllHouses.find(item => item.name === name);
@@ -23,26 +24,28 @@ function Party(){
     const [currentHouse, setCurrentHouse] = useState("")
     const [curentHouseDate, setCurrentHouseDate] = useState("")
     const [houseId, setHouseId] = useState("")
-    console.log(houseId)
     const [coordinates, setCoordinates] = useState(null);
     const apiKey = "AIzaSyBoKhRlp8kvQB4ZOnOQxkMhDo3kJR-UEZg"
 
     // Allow the map to close on click
     const handleClose = async() => {
-        if (showMap){
-            setShowMap(false)
-        }
-        setCurrentHouse("")
-        setCurrentHouseDate("")
-        setHouseId("")
+      updateInfo()
+      if (showMap){
+          setShowMap(false)
+      }
+      setCurrentHouse("")
+      setCurrentHouseDate("")
+      setHouseId("")
     }
     
     // update a comment on click
     const handleCommentClick = async () => {
+      updateInfo()
       setShowComments(!showComments)
     }
     // update likes on click
     const handleLikeClick = async() => {
+      updateInfo()
       try{
           setLikes(likes + 1)
           const res = await axios.put("http://localhost:3001/api/party/update-likes",{
@@ -55,6 +58,7 @@ function Party(){
     }
     // update dislikes on click
     const handleDisLikesClick = async() =>{
+      updateInfo()
       try{
         setDislikes(dislikes + 1)
         const res = await axios.put("http://localhost:3001/api/party/update-dislikes",{
@@ -66,6 +70,7 @@ function Party(){
     }
     // Access the location when it is clicked
     const handleLocationClick = async (house, locationName) => {
+      updateInfo()
       try {
         const response = await axios.get(`http://localhost:3001/api/maps/location/${encodeURIComponent(locationName)}`);
         setCoordinates(response.data);
@@ -76,6 +81,7 @@ function Party(){
         setLikes(house.likes)
         setDislikes(house.dislikes)
         setShowComments (false)
+        setComments(house.comments.length)
       } catch (error) {
         console.error('Error fetching from client side location:', error);
       }
@@ -84,7 +90,7 @@ function Party(){
     // loader loads the map (from google documentation)
     const loader = new Loader({
         apiKey: apiKey,
-        version: "weekly",
+        version: "weekly", 
       });
 
     // set likes, dislikes and comments
@@ -113,7 +119,7 @@ function Party(){
     
     //  display all the information to the end user
     return (
-        <div>
+        <div> 
             {throwing.map(house =>(
             <button key = {house.index} onClick={async () => await handleLocationClick(house, getAddressByName(house.houseName)+", Northfield, MN 55057")}>
             {house.houseName}
@@ -129,7 +135,7 @@ function Party(){
                 <button onClick={async () =>  await handleLikeClick()}>
                     <Icon path={mdiThumbUp} size={1} /> {likes}</button>
                 <button onClick={async() => await handleDisLikesClick()}><Icon path={mdiThumbDown} size={1} />{dislikes}</button>
-                <button onClick={async() =>  handleCommentClick()}>
+                <button onClick={handleCommentClick}>
                   <Icon path={mdilComment} size={1} /> 
                   {comments}
                 </button>

@@ -1,13 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import { HouseContext } from "../../context/houseContext";
+
+
 function Comments (house) {
+    const {updateInfo} = useContext(HouseContext)
     const houseId = house.house.id; 
     const comments = house.house.comments;
     const [newComment, setNewcomment] = useState()
     const past_house_comments = getExistingComments(comments)
     const [houseComments, setComments] = useState(past_house_comments)
-    
     function getExistingComments (comments){
         const filteredComments = [];
 
@@ -18,8 +22,8 @@ function Comments (house) {
     }
 
     const handleCommentSubmit = async (comment) =>{
+        updateInfo()
         setComments([...houseComments, comment])
-        console.log(house)
         try{
             const res = await axios.put ("http://localhost:3001/api/party/update-comments",{
                 houseId:houseId,
@@ -40,7 +44,7 @@ function Comments (house) {
             )}
             <div>
                 <input 
-                id = "neComment" 
+                id = "newComment" 
                 type="text" 
                 placeholder="Enter your goofy ass comment"
                 value={newComment}
