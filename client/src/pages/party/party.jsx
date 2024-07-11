@@ -2,7 +2,7 @@ import "./party.css"
 import React from "react"
 import { useState } from "react";
 import Icon from '@mdi/react';
-import { mdiThumbUp } from '@mdi/js';
+import { mdiFormatLetterCase, mdiThumbUp } from '@mdi/js';
 import { mdiThumbDown } from '@mdi/js';
 import { mdilComment } from '@mdi/light-js';
 import axios from 'axios';
@@ -10,15 +10,20 @@ import { Loader } from "@googlemaps/js-api-loader"
 import AllHouses from "../../assets/houses";
 import { HouseContext } from "../../context/houseContext";
 import { useContext } from "react";
+import Comments from "../comment/comment";
 
 function Party(){ 
-    // const throwing = ["makamba"]
     const {throwing } = useContext(HouseContext); 
+    const [showComments, setShowComments] = useState(false)
     const getAddressByName = (name) => {
         const foundItem = AllHouses.find(item => item.name === name);
         return foundItem ? foundItem.address : 'Address not found';
       };
     const [showMap, setShowMap] = useState(false);
+    const [currentHouse, setCurrentHouse] = useState("")
+    const [curentHouseDate, setCurrentHouseDate] = useState("")
+    const [houseId, setHouseId] = useState("")
+    console.log(houseId)
     const [coordinates, setCoordinates] = useState(null);
     const apiKey = "AIzaSyBoKhRlp8kvQB4ZOnOQxkMhDo3kJR-UEZg"
 
@@ -27,15 +32,50 @@ function Party(){
         if (showMap){
             setShowMap(false)
         }
+        setCurrentHouse("")
+        setCurrentHouseDate("")
+        setHouseId("")
     }
-
+    
+    // update a comment on click
+    const handleCommentClick = async () => {
+      setShowComments(!showComments)
+    }
+    // update likes on click
+    const handleLikeClick = async() => {
+      try{
+          setLikes(likes + 1)
+          const res = await axios.put("http://localhost:3001/api/party/update-likes",{
+              houseId:houseId
+          })
+          
+      } catch(error){
+        console.error("unable to update the house like")
+      }
+    }
+    // update dislikes on click
+    const handleDisLikesClick = async() =>{
+      try{
+        setDislikes(dislikes + 1)
+        const res = await axios.put("http://localhost:3001/api/party/update-dislikes",{
+          houseId:houseId
+      })
+      } catch(error){
+        console.log(error)
+      }
+    }
     // Access the location when it is clicked
-    const handleLocationClick = async (locationName) => {
+    const handleLocationClick = async (house, locationName) => {
       try {
         const response = await axios.get(`http://localhost:3001/api/maps/location/${encodeURIComponent(locationName)}`);
         setCoordinates(response.data);
-        console.log(locationName)
         setShowMap(true)
+        setCurrentHouse(house)
+        setCurrentHouseDate(house.createdAt)
+        setHouseId(house.id)
+        setLikes(house.likes)
+        setDislikes(house.dislikes)
+        setShowComments (false)
       } catch (error) {
         console.error('Error fetching from client side location:', error);
       }
@@ -75,7 +115,7 @@ function Party(){
     return (
         <div>
             {throwing.map(house =>(
-            <button key = {house.index} onClick={async () => await handleLocationClick(getAddressByName(house.houseName)+", Northfield, MN 55057")}>
+            <button key = {house.index} onClick={async () => await handleLocationClick(house, getAddressByName(house.houseName)+", Northfield, MN 55057")}>
             {house.houseName}
             </button>
             
@@ -83,13 +123,20 @@ function Party(){
             
      
             {showMap && 
-            <div id="map" style={{ width: '600px', height: '400px' }}></div>
-            }
-            <button onClick={() => setLikes(likes + 1)}>
-                <Icon path={mdiThumbUp} size={1} /> {likes}</button>
-            <button onClick={() => setDislikes(dislikes + 1)}><Icon path={mdiThumbDown} size={1} />{dislikes}</button>
-            <button><Icon path={mdilComment} size={1} /> {comments}</button>
-            <button onClick={handleClose}>X</button>
+              <div>
+                <div id="map" style={{ width: '600px', height: '400px' }}></div>
+                
+                <button onClick={async () =>  await handleLikeClick()}>
+                    <Icon path={mdiThumbUp} size={1} /> {likes}</button>
+                <button onClick={async() => await handleDisLikesClick()}><Icon path={mdiThumbDown} size={1} />{dislikes}</button>
+                <button onClick={async() =>  handleCommentClick()}>
+                  <Icon path={mdilComment} size={1} /> 
+                  {comments}
+                </button>
+                {showComments && <Comments house = {currentHouse} />}
+                <button onClick={handleClose}>X</button>
+              </div>
+          }
         </div>
     )
 }

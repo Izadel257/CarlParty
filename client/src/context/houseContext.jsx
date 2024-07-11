@@ -31,7 +31,6 @@ export const HouseProvider = ({children}) =>{
       }
       const data = res.data; 
       setThrowing(data)
-      console.log(data)
     } catch(error){
       console.error("Error getting all the houses that have parties",error)
     }

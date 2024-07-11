@@ -2,12 +2,22 @@ const mongoose = require("mongoose");
 
 const houseSchema= new mongoose.Schema({
     "houseName": String,       
-    "likes": Number,
+    "likes": {
+      type:Number, 
+      default: 0
+      },
+    "dislikes": {
+      type: Number,
+      default: 0
+    },
     "comments": [
       {
         "text": String,    
-        "timestamp": Date 
-      }
+        "timestamp": {
+          type: Date, 
+          default: mongoose.now
+        }
+      },
     ],
     "reports": Number,                   
     "createdAt": {
