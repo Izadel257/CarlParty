@@ -4,9 +4,8 @@ import axios from "axios";
 import { useContext } from "react";
 import { HouseContext } from "../../context/houseContext";
 
-
 function Comments (house) {
-    const {updateInfo} = useContext(HouseContext)
+    const {updateInfo, incrementComment} = useContext(HouseContext)
     const houseId = house.house.id; 
     const comments = house.house.comments;
     const [newComment, setNewcomment] = useState()
@@ -20,9 +19,9 @@ function Comments (house) {
         }
         return (filteredComments)
     }
-
     const handleCommentSubmit = async (comment) =>{
         updateInfo()
+        incrementComment()
         setComments([...houseComments, comment])
         try{
             const res = await axios.put ("http://localhost:3001/api/party/update-comments",{

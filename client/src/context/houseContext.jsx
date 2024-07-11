@@ -21,9 +21,10 @@ const createHouse = async(houseName, createdAt) => {
 
 
 export const HouseProvider = ({children}) =>{
+  const [numComment, setNumComment] = useState(0)
   const [update, setUpdate] = useState(false)
   const [throwing, setThrowing] = useState([]); 
-
+   
   const updateThrowing = async () =>{
     try{  
       const res = await axios.get('http://localhost:3001/api/party/getall')
@@ -38,6 +39,13 @@ export const HouseProvider = ({children}) =>{
     }
   }
 
+  const incrementComment = async() =>{
+    setNumComment(numComment + 1)
+  }
+
+  const updateCommentCount = async (comments) => {
+    setNumComment(comments)
+  }
   
   useEffect (()=>{
     updateThrowing(); 
@@ -51,7 +59,15 @@ export const HouseProvider = ({children}) =>{
     setUpdate(!update)
   }
   return (
-      <HouseContext.Provider value={{ throwing,handleThrowingClick, updateInfo, }}>
+      <HouseContext.Provider 
+        value={{ 
+          throwing,
+          handleThrowingClick, 
+          updateInfo, 
+          updateCommentCount, 
+          incrementComment, 
+          numComment, 
+        }}>
         {children}
       </HouseContext.Provider>
     );

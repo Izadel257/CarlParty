@@ -13,8 +13,7 @@ import { useContext } from "react";
 import Comments from "../comment/comment";
 
 function Party(){ 
-    const { throwing } = useContext(HouseContext); 
-    const { updateInfo } = useContext(HouseContext)
+    const { throwing, updateInfo, updateCommentCount, numComment } = useContext(HouseContext); 
     const [showComments, setShowComments] = useState(false)
     const getAddressByName = (name) => {
         const foundItem = AllHouses.find(item => item.name === name);
@@ -39,8 +38,9 @@ function Party(){
     }
     
     // update a comment on click
-    const handleCommentClick = async () => {
+    const handleCommentClick = async (comments) => {
       updateInfo()
+      updateCommentCount(comments)
       setShowComments(!showComments)
     }
     // update likes on click
@@ -82,6 +82,7 @@ function Party(){
         setDislikes(house.dislikes)
         setShowComments (false)
         setComments(house.comments.length)
+        updateCommentCount(house.comments.length)
       } catch (error) {
         console.error('Error fetching from client side location:', error);
       }
@@ -135,9 +136,9 @@ function Party(){
                 <button onClick={async () =>  await handleLikeClick()}>
                     <Icon path={mdiThumbUp} size={1} /> {likes}</button>
                 <button onClick={async() => await handleDisLikesClick()}><Icon path={mdiThumbDown} size={1} />{dislikes}</button>
-                <button onClick={handleCommentClick}>
+                <button onClick={async () => await handleCommentClick (comments)}>
                   <Icon path={mdilComment} size={1} /> 
-                  {comments}
+                  {numComment}
                 </button>
                 {showComments && <Comments house = {currentHouse} />}
                 <button onClick={handleClose}>X</button>
