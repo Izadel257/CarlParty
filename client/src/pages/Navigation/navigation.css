@@ -1,12 +1,8 @@
-/* Reset default margin and padding for the whole page */
-body {
-    margin: 200px;
-}
 
 /* Set background color and text color */
 body {
-    background-color:lightgray; /* blackish-blue background */
-    color: #001f3f; /* white text color */
+    background-color:#041e21; /* blackish-blue background */
+    color: #c6f2f7; /* white text color */
     font-family: 'Times New Roman', Times, serif; /* Times New Roman font */
     display: flex;
     align-items: center;

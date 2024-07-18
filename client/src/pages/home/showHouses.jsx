@@ -3,6 +3,8 @@ import AllHouses from "../../assets/houses";
 import { useState } from "react";
 import { HouseContext } from "../../context/houseContext";
 import { useContext } from "react";
+import Datetime from 'react-datetime';
+// import 'react-datetime/css/react-datetime.css';
 
 function ShowHouses(){
     const [partyDate, setPartyDate] = useState('')
@@ -19,12 +21,16 @@ function ShowHouses(){
             <div>
                 <form >
                     <label id = "date_party">Date</label>
-                    <input 
-                        id= "partyDate" 
-                        type="date" 
-                        value={partyDate}
-                        onChange={(e) => setPartyDate(e.target.value)}
-                        required></input>
+                    <Datetime
+                        value = {partyDate}
+                        // onChange={(date) => setPartyDate(date)}
+                        dateFormat="MM/DD/YYYY"
+                        timeFormat="HH:mm"
+                        closeOnSelect={false}
+                        closeOnClickOutside={false}
+                        className="datetime-wrapper"
+                        clock={true}
+                    />
                     <button type="submit" onClick={ async() => await handleThrowingClick (houseName, partyDate)}>go</button>
                 </form>
                 

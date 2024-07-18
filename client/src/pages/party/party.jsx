@@ -11,8 +11,10 @@ import AllHouses from "../../assets/houses";
 import { HouseContext } from "../../context/houseContext";
 import { useContext } from "react";
 import Comments from "../comment/comment";
+import { format, previousDay } from 'date-fns';
 
 function Party(){ 
+    const [visibleEvents, setVisibleEvents] = useState(5) 
     const { throwing, updateInfo, updateCommentCount, numComment } = useContext(HouseContext); 
     const [showComments, setShowComments] = useState(false)
     const getAddressByName = (name) => {
@@ -117,17 +119,29 @@ function Party(){
             title: 'Decide Later',
         });
       });
-    
+      const showMore = () => {
+        setVisibleEvents(prevCount => prevCount + 5);
+      };
+      const showLess = () => {
+        setVisibleEvents (prevCount => prevCount - 5)
+      }
     //  display all the information to the end user
     return (
         <div> 
-            {throwing.map(house =>(
-            <button key = {house.index} onClick={async () => await handleLocationClick(house, getAddressByName(house.houseName)+", Northfield, MN 55057")}>
-            {house.houseName}
-            </button>
-            
+            {throwing.slice(0, visibleEvents).map(house =>(
+              <div>
+                <button key = {house.index} onClick={async () => await handleLocationClick(house, getAddressByName(house.houseName)+", Northfield, MN 55057")}>
+                {house.houseName}
+                </button>
+                <p> on {format(new Date(house.createdAt), 'MMMM dd, yyyy HH:mm:ss')}</p>
+              </div>
             ))}
-            
+            {visibleEvents < throwing.length && (
+              <button onClick={showMore}>More</button>
+            )}
+            {visibleEvents > 5 && (
+              <button onClick={showLess}>Less</button>
+            )}
      
             {showMap && 
               <div>
